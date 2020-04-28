@@ -12,23 +12,32 @@ def volunteerUser(request, user_id):
     if request.content_type != 'application/json':
         return HttpResponse('The content-type must be application/json.', status=415)
 
-    # Make sure request is GET or PUT
+    # grab the volunteer user from db
+    volunteerUser = None
+    try:
+        volunteerUser = VolunteerUser.objects.get(id=user_id)
+    except VolunteerUser.DoesNotExist:
+        return HttpResponse(f'Volunteer user with id: {user_id}, does not exist', status=404)
+
+    # Make sure request is GET, PUT, or PATCH
     if request.method == 'GET':
-        try:
-            # Get the object and convert it to python dict object
-            volunteerUser = VolunteerUser.objects.get(id=user_id)
-            volunteerUser_dict = VolunteerUser.convertToJsonDict(volunteerUser)
-            return JsonResponse(volunteerUser_dict)
-        except VolunteerUser.DoesNotExist:
-            return HttpResponse(f'Volunteer user with id: {user_id}, does not exist', status=404)
+        volunteerUser_dict = VolunteerUser.convertToJsonDict(volunteerUser)
+        return JsonResponse(volunteerUser_dict)
     elif request.method == 'PUT':
-        try:
-            # Get the object from db
-            volunteerUser = VolunteerUser.objects.get(id=user_id)
-            writeVolunteerUserToDatabaseFromRequest(request, id=user_id)
-            return HttpResponse('Successfully updated VolunteerUser object', status=200)
-        except VolunteerUser.DoesNotExist:
-            return HttpResponse(f'Volunteer user with id: {user_id}, does not exist', status=404)
+        writeVolunteerUserToDatabaseFromRequest(request, id=user_id)
+        return HttpResponse('Successfully updated VolunteerUser object', status=200)
+    elif request.method == 'PATCH':
+        # Get the request body
+        body_dict = json.loads(request.body)
+        fields_to_change_list = body_dict['fields_to_change']
+        for field_name, field_new_value in fields_to_change_list.items():
+            try:
+                getattr(volunteerUser, field_name)
+            except AttributeError:
+                continue
+            setattr(volunteerUser, field_name, field_new_value)
+        volunteerUser.save()
+        return HttpResponse('Successfully updated VolunteerUser object', status=200)
     else:
         return HttpResponse('Only the GET and PUT verbs can be used on this endpoint.', status=405)
 
