@@ -48,6 +48,7 @@ class VolunteerUser(models.Model):
     @staticmethod
     def convertToJsonDict(volunteerUser):
         return {
+            'id': volunteerUser.id,
             'first_name': volunteerUser.first_name,
             'last_name': volunteerUser.last_name,
             'email': volunteerUser.email,
