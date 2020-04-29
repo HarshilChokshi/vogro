@@ -75,11 +75,36 @@ class VolunteerUser(models.Model):
             'get_store_notifications': volunteerUser.get_store_notifications
         }
 
-
-# This is a dummy user model just so LiveGroceryPost posts works
 class ClientUser(models.Model):
-    first_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    email = models.CharField(max_length=30)
+    phone_number = models.CharField(max_length=15)
+    total_orders = models.IntegerField(default=0)
+    is_allowed_to_use_app = models.BooleanField(default=True)
+    strikes = models.IntegerField(default=0)
+    profile_image_ref = models.CharField(max_length=50, default='')
+    address = models.TextField()
+    address_name = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name
+
+    @staticmethod
+    def convertToJsonDict(clientUser):
+        return {
+            'id': clientUser.id,
+            'first_name': clientUser.first_name,
+            'last_name': clientUser.last_name,
+            'email': clientUser.email,
+            'phone_number': clientUser.phone_number,
+            'total_orders': clientUser.total_orders,
+            'is_allowed_to_use_app': clientUser.is_allowed_to_use_app,
+            'strikes': clientUser.strikes,
+            'profile_image_ref': clientUser.profile_image_ref,
+            'address': json.loads(clientUser.address),
+            'address_name': clientUser.address_name
+        }
 
 class LiveGroceryPost(models.Model):
     client_user_id = models.ForeignKey(ClientUser, on_delete=models.CASCADE)

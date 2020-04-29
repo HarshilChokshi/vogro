@@ -84,8 +84,6 @@ def launchAllVolunteerUsersMatchingLocationJob(request):
 
     return JsonResponse({'target_volunteer_user_ids': targetVolunteerIds})
 
-
-
 @csrf_exempt
 def createLiveGroceryPost(request):
     # Make sure request is POST method and content type is application/json
@@ -193,3 +191,51 @@ def deleteLiveGroceryPost(request, livegrocerypost_id):
         return HttpResponse(f'Successfully deleted LiveGroceryPost object with id {livegrocerypost_id}', status=200)
     except LiveGroceryPost.DoesNotExist:
         return HttpResponse(f'LiveGroceryPost user with id: {livegrocerypost_id}, does not exist', status=404)
+
+@csrf_exempt
+def clientUser(request, user_id):
+    # Make sure content type is application/json
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+
+    # grab the volunteer user from db
+    clientUser = None
+    try:
+        clientUser = ClientUser.objects.get(id=user_id)
+    except ClientUser.DoesNotExist:
+        return HttpResponse(f'Client user with id: {user_id}, does not exist', status=404)
+
+    # Make sure request is GET, PUT, or PATCH
+    if request.method == 'GET':
+        clientUser_dict = ClientUser.convertToJsonDict(clientUser)
+        return JsonResponse(clientUser_dict)
+    elif request.method == 'PUT':
+        writeClientUserToDatabaseFromRequest(request, id=user_id)
+        return HttpResponse('Successfully updated ClientUser object', status=200)
+    elif request.method == 'PATCH':
+        # Get the request body
+        body_dict = json.loads(request.body)
+        fields_to_change_list = body_dict['fields_to_change']
+        for field_name, field_new_value in fields_to_change_list.items():
+            try:
+                getattr(clientUser, field_name)
+            except AttributeError:
+                continue
+            if field_name == 'address':
+                field_new_value = json.dumps(field_new_value)
+            setattr(clientUser, field_name, field_new_value)
+        clientUser.save()
+        return HttpResponse('Successfully updated ClientUser object', status=200)
+    else:
+        return HttpResponse('Only the GET, PUT and PATCH verbs can be used on this endpoint.', status=405)
+
+
+@csrf_exempt
+def addClientUser(request):
+    # Make sure request is POST method and content type is application/json
+    if request.method != 'POST':
+        return HttpResponse('Only the POST verb can be used on this endpoint.', status=405)
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+    writeClientUserToDatabaseFromRequest(request)
+    return HttpResponse('Successfully added ClientUser object', status=200)
