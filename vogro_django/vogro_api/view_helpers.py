@@ -36,3 +36,18 @@ def get_kilometer_distance_between_two_points(lat1, long1, lat2, long2):
     coords_2 = (lat2, long2)
 
     return geopy.distance.distance(coords_1, coords_2).m
+
+
+def getAllLiveGroceryPosts(isClient, user_id):
+    liveGroceryPostList = []
+
+    if(isClient):
+        liveGroceryPostList = LiveGroceryPost.objects.filter(client_user_id=user_id)
+    else:
+        liveGroceryPostList = LiveGroceryPost.objects.filter(volunteer_user_id=user_id)
+
+    liveGroceryPostJsonList = []
+    for post in liveGroceryPostList:
+        liveGroceryPostJsonList.append(LiveGroceryPost.convertToJsonDict(post))
+
+    return {"result_list": liveGroceryPostJsonList}

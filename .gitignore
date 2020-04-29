@@ -1,1 +1,3 @@
-*/__pycache__/*
+vogro_api/__pycache__/*
+vogro_api/migrations/__pycache__/*
+vogro_django/__pycache__/*
