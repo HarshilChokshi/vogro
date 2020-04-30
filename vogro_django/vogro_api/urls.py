@@ -12,4 +12,7 @@ urlpatterns = [
     path('livegrocerypost/<int:livegrocerypost_id>', views.deleteLiveGroceryPost),
     path('clientuser/<int:user_id>', views.clientUser),
     path('clientuser/add_user', views.addClientUser),
+    path('completedgrocerypost/create_post', views.createCompletedGroceryPost),
+    path('completedgrocerypost/volunteeruser/<int:user_id>', views.getAllCompletedGroceryPostsByVolunteer),
+    path('completedgrocerypost/clientuser/<int:user_id>', views.getAllCompletedGroceryPostsByVolunteer),
 ]
