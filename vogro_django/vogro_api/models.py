@@ -144,3 +144,41 @@ class LiveGroceryPost(models.Model):
         	"grocery_total_amount": liveGroceryPost.grocery_total_amount,
         	"state_of_volunteer": liveGroceryPost.state_of_volunteer
         }
+
+
+class CompletedGroceryPost(models.Model):
+    client_user_id = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    volunteer_user_id = models.ForeignKey(VolunteerUser, on_delete=models.CASCADE)
+    grocery_store_address = models.TextField()
+    grocery_store_address_name = models.CharField(max_length=50)
+    grocery_store_name = models.CharField(max_length=30)
+    time_of_grocery_shopping = models.DateTimeField()
+    grocery_item_list = models.TextField()
+    earliest_time = models.DateTimeField()
+    latest_time = models.DateTimeField()
+    time_of_post = models.DateTimeField()
+    receipt_image_ref = models.CharField(max_length=100, default='')
+    grocery_total_amount = models.DecimalField(max_digits=6, decimal_places=2)
+
+
+    def __str__(self):
+        return str(self.id)
+
+
+    @staticmethod
+    def convertToJsonDict(liveGroceryPost):
+        return {
+            "id": liveGroceryPost.id,
+            "client_user_id": liveGroceryPost.client_user_id.id,
+        	"volunteer_user_id": liveGroceryPost.volunteer_user_id.id,
+        	"grocery_store_address": json.loads(liveGroceryPost.grocery_store_address),
+        	"grocery_store_address_name": liveGroceryPost.grocery_store_address_name,
+        	"grocery_store_name": liveGroceryPost.grocery_store_name,
+        	"time_of_grocery_shopping": liveGroceryPost.time_of_grocery_shopping.strftime(dateFormatString),
+        	"grocery_item_list": json.loads(liveGroceryPost.grocery_item_list),
+        	"earliest_time": liveGroceryPost.earliest_time.strftime(dateFormatString),
+        	"latest_time": liveGroceryPost.latest_time.strftime(dateFormatString),
+        	"time_of_post":liveGroceryPost.time_of_post.strftime(dateFormatString),
+        	"receipt_image_ref": liveGroceryPost.receipt_image_ref,
+        	"grocery_total_amount": liveGroceryPost.grocery_total_amount,
+        }
