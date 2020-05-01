@@ -144,3 +144,24 @@ class LiveGroceryPost(models.Model):
         	"grocery_total_amount": liveGroceryPost.grocery_total_amount,
         	"state_of_volunteer": liveGroceryPost.state_of_volunteer
         }
+
+class Complaints(models.Model):
+    client_user_id = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    volunteer_user_id = models.ForeignKey(VolunteerUser, on_delete=models.CASCADE)
+    # completed_grocery_post_id = models.ForeignKey(CompletedGroceryPosts, on_delete=models.CASCADE)
+    is_complainer_volunteer = models.BooleanField()
+    complaint_details = models.TextField(max_length=500)
+
+    def __str__(self):
+        return str(self.id)
+
+    @staticmethod
+    def convertToJsonDict(complaints):
+        return{
+            "id": complaints.id,
+            "client_user_id": complaints.client_user_id.id,
+        	"volunteer_user_id": complaints.volunteer_user_id.id,
+            # "completed_grocery_post_id": complaints.completed_grocery_post_id.id,
+            "is_complainer_volunteer": complaints.is_complainer_volunteer,
+            "complaint_details": complaints.complaint_details
+    }

@@ -76,3 +76,18 @@ def writeClientUserToDatabaseFromRequest(request, id=None):
         clientUser.id = id
 
     clientUser.save()
+
+
+def getAllComplaints(isVolunteer, user_id):
+    complaintsList = []
+
+    if(isVolunteer):
+        complaintsList = Complaints.objects.filter(volunteer_user_id=user_id)
+    else:
+        complaintsList = Complaints.objects.filter(client_user_id=user_id)
+
+    complaintsJsonList = []
+    for post in complaintsList:
+        complaintsJsonList.append(Complaints.convertToJsonDict(post))
+
+    return {"result_list": complaintsJsonList}
