@@ -4,7 +4,6 @@ from allauth.account.views import ConfirmEmailView
 from rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from . import views
 from django.contrib.auth import views as contrib_auth_views
-
 from rest_auth.views import (
     LoginView, LogoutView, UserDetailsView, PasswordChangeView,
     PasswordResetView, PasswordResetConfirmView
@@ -36,5 +35,7 @@ urlpatterns = [
     path('reset/done/', contrib_auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     # rest_auth registration url
-    path('registration/', include('rest_auth.registration.urls'))
+    path('registration/', include('rest_auth.registration.urls')),
+
+    path('resend-verification-email/', views.ResendEmailVerification.as_view(), name='rest_resend_verification_email'),
 ]
