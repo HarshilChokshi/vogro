@@ -147,6 +147,7 @@ EMAIL_HOST_USER = 'management.vogro@gmail.com'
 EMAIL_HOST_PASSWORD = 'JaiShreeKrishna123'
 
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
@@ -156,3 +157,8 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('account_co
 REST_AUTH_SERIALIZERS = {
     'TOKEN_SERIALIZER': 'auth_api.serializers.TokenSerializer',
 }
+
+AUTHENTICATION_BACKENDS = (
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
