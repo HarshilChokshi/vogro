@@ -30,27 +30,6 @@ def writeVolunteerUserToDatabaseFromRequest(request, id=None):
 
     volunteerUser.save()
 
-
-def get_kilometer_distance_between_two_points(lat1, long1, lat2, long2):
-    coords_1 = (lat1, long1)
-    coords_2 = (lat2, long2)
-
-    return geopy.distance.distance(coords_1, coords_2).m
-
-def getAllLiveGroceryPosts(isClient, user_id):
-    liveGroceryPostList = []
-
-    if(isClient):
-        liveGroceryPostList = LiveGroceryPost.objects.filter(client_user_id=user_id)
-    else:
-        liveGroceryPostList = LiveGroceryPost.objects.filter(volunteer_user_id=user_id)
-
-    liveGroceryPostJsonList = []
-    for post in liveGroceryPostList:
-        liveGroceryPostJsonList.append(LiveGroceryPost.convertToJsonDict(post))
-
-    return {"result_list": liveGroceryPostJsonList}
-
 def writeClientUserToDatabaseFromRequest(request, id=None):
     # get the request body and convert it to python dict object
     body_dict = json.loads(request.body)
@@ -69,13 +48,49 @@ def writeClientUserToDatabaseFromRequest(request, id=None):
         strikes = body_dict['strikes'],
         profile_image_ref = body_dict['profile_image_ref'],
         address = user_address_string,
-        address_name =  body_dict['address_name'],
+        address_name = body_dict['address_name'],
     )
 
     if id != None:
         clientUser.id = id
 
     clientUser.save()
+
+def get_kilometer_distance_between_two_points(lat1, long1, lat2, long2):
+    coords_1 = (lat1, long1)
+    coords_2 = (lat2, long2)
+
+    return geopy.distance.distance(coords_1, coords_2).m
+
+
+def getAllLiveGroceryPosts(isClient, user_id):
+    liveGroceryPostList = []
+
+    if(isClient):
+        liveGroceryPostList = LiveGroceryPost.objects.filter(client_user_id=user_id)
+    else:
+        liveGroceryPostList = LiveGroceryPost.objects.filter(volunteer_user_id=user_id)
+
+    liveGroceryPostJsonList = []
+    for post in liveGroceryPostList:
+        liveGroceryPostJsonList.append(LiveGroceryPost.convertToJsonDict(post))
+
+    return {"result_list": liveGroceryPostJsonList}
+
+
+def getAllCompletedGroceryPosts(isClient, user_id):
+    completedGroceryPostList = []
+
+    if(isClient):
+        completedGroceryPostList = CompletedGroceryPost.objects.filter(client_user_id=user_id)
+    else:
+        completedGroceryPostList = CompletedGroceryPost.objects.filter(volunteer_user_id=user_id)
+
+    completedGroceryPostJsonList = []
+    for post in completedGroceryPostList:
+        completedGroceryPostJsonList.append(CompletedGroceryPost.convertToJsonDict(post))
+
+    return {"result_list": completedGroceryPostJsonList}
 
 
 def getAllComplaints(isVolunteer, user_id):

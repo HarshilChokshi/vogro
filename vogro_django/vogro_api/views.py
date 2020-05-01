@@ -242,6 +242,69 @@ def addClientUser(request):
 
 
 @csrf_exempt
+def createCompletedGroceryPost(request):
+    # Make sure request is POST method and content type is application/json
+    if request.method != 'POST':
+        return HttpResponse('Only the POST verb can be used on this endpoint.', status=405)
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+
+    # get the request body and convert it to python dict object
+    body_dict = json.loads(request.body)
+
+    # Serialize grocery store address and grocery store item list
+    grocery_address_string = json.dumps(body_dict['grocery_store_address'])
+    grocery_item_list_string = json.dumps(body_dict['grocery_item_list'])
+
+    # Parse out date and time objects from strings in json
+    time_of_grocery_shopping = datetime.strptime(body_dict['time_of_grocery_shopping'], dateFormatString)
+    time_of_post = datetime.strptime(body_dict['time_of_post'], dateFormatString)
+    earliest_time = datetime.strptime(body_dict['earliest_time'], dateFormatString)
+    latest_time = datetime.strptime(body_dict['latest_time'], dateFormatString)
+
+    # Create the CompletedGroceryPost object and save to database
+    completedGrocerypPost = CompletedGroceryPost(
+        client_user_id_id = body_dict['client_user_id'],
+        volunteer_user_id_id = body_dict['volunteer_user_id'],
+        grocery_store_address = grocery_address_string,
+        grocery_store_address_name = body_dict['grocery_store_address_name'],
+        grocery_store_name = body_dict['grocery_store_name'],
+        time_of_grocery_shopping = time_of_grocery_shopping,
+        grocery_item_list = grocery_item_list_string,
+        earliest_time = earliest_time,
+        latest_time = latest_time,
+        time_of_post = time_of_post,
+        receipt_image_ref = body_dict['receipt_image_ref'],
+        grocery_total_amount = body_dict['grocery_total_amount'],
+    )
+    completedGrocerypPost.save()
+    return HttpResponse('Successfully added CompletedGroceryPost object', status=200)
+
+
+@csrf_exempt
+def getAllCompletedGroceryPostsByVolunteer(request, user_id):
+    # Make sure request is GET method and content type is application/json
+    if request.method != 'GET':
+        return HttpResponse('Only the GET verb can be used on this endpoint.', status=405)
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+
+    completedGroceryPostJsonDict = getAllCompletedGroceryPosts(False, user_id)
+    return JsonResponse(completedGroceryPostJsonDict)
+
+@csrf_exempt
+def getAllCompletedGroceryPostsByVolunteer(request, user_id):
+    # Make sure request is GET method and content type is application/json
+    if request.method != 'GET':
+        return HttpResponse('Only the GET verb can be used on this endpoint.', status=405)
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+
+    completedGroceryPostJsonDict = getAllCompletedGroceryPosts(True, user_id)
+    return JsonResponse(completedGroceryPostJsonDict)
+
+
+@csrf_exempt
 def createComplaint(request):
     # Make sure request is POST method and content type is application/json
     if request.method != 'POST':
@@ -252,16 +315,17 @@ def createComplaint(request):
     # get the request body and convert it to python dict object
     body_dict = json.loads(request.body)
 
-    # Create the LiveGroceryPost object and save to database
+    # Create the Complaints object and save to database
     complaints = Complaints(
         client_user_id_id = body_dict['client_user_id'],
         volunteer_user_id_id = body_dict['volunteer_user_id'],
-        # completed_grocery_post_id_id = body_dict['completed_grocery_post_id'],
+        completed_grocery_post_id_id = body_dict['completed_grocery_post_id'],
         is_complainer_volunteer = body_dict['is_complainer_volunteer'],
         complaint_details = body_dict['complaint_details']
     )
     complaints.save()
     return HttpResponse('Successfully added Complaints object', status=200)
+
 
 @csrf_exempt
 def getComplaintsByVolunteer(request, user_id):
@@ -273,6 +337,7 @@ def getComplaintsByVolunteer(request, user_id):
 
     complaintsJsonDict = getAllComplaints(True, user_id)
     return JsonResponse(complaintsJsonDict)
+
 
 @csrf_exempt
 def getComplaintsByClient(request, user_id):

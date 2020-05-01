@@ -14,5 +14,8 @@ urlpatterns = [
     path('clientuser/add_user', views.addClientUser),
     path('complaints/create_complaint', views.createComplaint),
     path('complaints/volunteer/<int:user_id>', views.getComplaintsByVolunteer),
-    path('complaints/client/<int:user_id>', views.getComplaintsByClient)
+    path('complaints/client/<int:user_id>', views.getComplaintsByClient),
+    path('completedgrocerypost/create_post', views.createCompletedGroceryPost),
+    path('completedgrocerypost/volunteeruser/<int:user_id>', views.getAllCompletedGroceryPostsByVolunteer),
+    path('completedgrocerypost/clientuser/<int:user_id>', views.getAllCompletedGroceryPostsByVolunteer),
 ]
