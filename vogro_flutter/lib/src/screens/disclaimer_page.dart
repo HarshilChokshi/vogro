@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'resend_email_page.dart';
+import 'agree_to_terms_page.dart';
 
-class SignUp extends StatelessWidget {
+class Disclaimer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topRight,
@@ -14,30 +14,31 @@ class SignUp extends StatelessWidget {
               SizedBox(height: 20),
               Row(children: <Widget>[
                 Back(context),
-                SizedBox(width: 100),
-                Text("SIGN UP",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    )),
-                SizedBox(width: 5),
-                Vine(),
               ]),
               SizedBox(height: 15),
               Align(
-                // alignment: Alignment(-0.75, 0),
-                child: Text("Join Vogro Today",
+                child: Text("Disclaimer",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     )),
               ),
               SizedBox(height: 30),
-              Email(),
               SizedBox(height: 10),
-              Password(),
+              SizedBox(width: 100),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22.0, 0, 22, 0),
+                child: Text(
+                    '''Volunteer - This is what a volunteer is, This is what a volunteer does. 
+
+Client - This is what a client is, This is what a client does.''',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              SizedBox(width: 5),
               SizedBox(height: 10),
-              ConfirmPassword(),
               SizedBox(height: 10),
               Next(context),
             ],
@@ -65,54 +66,6 @@ Widget Back(BuildContext context) {
   );
 }
 
-Widget Vine() {
-  return Image(
-    image: AssetImage('assets/images/vine.png'),
-    height: 25,
-  );
-}
-
-Widget Email() {
-  return Padding(
-      padding: const EdgeInsets.fromLTRB(22.0, 0, 22, 0),
-      child: TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          autofocus: false,
-          decoration: InputDecoration(
-            hintText: 'Email',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border: OutlineInputBorder(),
-          )));
-}
-
-Widget Password() {
-  return Padding(
-      padding: const EdgeInsets.fromLTRB(22.0, 0, 22, 0),
-      child: TextFormField(
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
-          autofocus: false,
-          decoration: InputDecoration(
-            hintText: 'New Password',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border: OutlineInputBorder(),
-          )));
-}
-
-Widget ConfirmPassword() {
-  return Padding(
-      padding: const EdgeInsets.fromLTRB(22.0, 0, 22, 0),
-      child: TextFormField(
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
-          autofocus: false,
-          decoration: InputDecoration(
-            hintText: 'Confirm Password',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border: OutlineInputBorder(),
-          )));
-}
-
 Widget Next(BuildContext context) {
   return Center(
     child: Column(
@@ -126,7 +79,7 @@ Widget Next(BuildContext context) {
             color: Color(0xff39d47f),
             onPressed: () {
               Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => ResendEmail()));
+                  CupertinoPageRoute(builder: (context) => AgreeToTerms()));
             },
             textColor: Colors.black,
             child: Container(
