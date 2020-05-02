@@ -146,6 +146,7 @@ class LiveGroceryPost(models.Model):
         }
 
 
+
 class CompletedGroceryPost(models.Model):
     client_user_id = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     volunteer_user_id = models.ForeignKey(VolunteerUser, on_delete=models.CASCADE)
@@ -164,7 +165,6 @@ class CompletedGroceryPost(models.Model):
     def __str__(self):
         return str(self.id)
 
-
     @staticmethod
     def convertToJsonDict(liveGroceryPost):
         return {
@@ -182,3 +182,25 @@ class CompletedGroceryPost(models.Model):
         	"receipt_image_ref": liveGroceryPost.receipt_image_ref,
         	"grocery_total_amount": liveGroceryPost.grocery_total_amount,
         }
+
+
+class Complaints(models.Model):
+    client_user_id = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    volunteer_user_id = models.ForeignKey(VolunteerUser, on_delete=models.CASCADE)
+    completed_grocery_post_id = models.ForeignKey(CompletedGroceryPost, on_delete=models.CASCADE)
+    is_complainer_volunteer = models.BooleanField()
+    complaint_details = models.TextField(max_length=500)
+
+    def __str__(self):
+        return str(self.id)
+
+    @staticmethod
+    def convertToJsonDict(complaints):
+        return{
+            "id": complaints.id,
+            "client_user_id": complaints.client_user_id.id,
+        	"volunteer_user_id": complaints.volunteer_user_id.id,
+            "completed_grocery_post_id": complaints.completed_grocery_post_id.id,
+            "is_complainer_volunteer": complaints.is_complainer_volunteer,
+            "complaint_details": complaints.complaint_details
+    }

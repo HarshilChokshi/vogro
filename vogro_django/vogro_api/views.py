@@ -240,6 +240,7 @@ def addClientUser(request):
     writeClientUserToDatabaseFromRequest(request)
     return HttpResponse('Successfully added ClientUser object', status=200)
 
+
 @csrf_exempt
 def createCompletedGroceryPost(request):
     # Make sure request is POST method and content type is application/json
@@ -291,7 +292,6 @@ def getAllCompletedGroceryPostsByVolunteer(request, user_id):
     completedGroceryPostJsonDict = getAllCompletedGroceryPosts(False, user_id)
     return JsonResponse(completedGroceryPostJsonDict)
 
-
 @csrf_exempt
 def getAllCompletedGroceryPostsByVolunteer(request, user_id):
     # Make sure request is GET method and content type is application/json
@@ -302,3 +302,50 @@ def getAllCompletedGroceryPostsByVolunteer(request, user_id):
 
     completedGroceryPostJsonDict = getAllCompletedGroceryPosts(True, user_id)
     return JsonResponse(completedGroceryPostJsonDict)
+
+
+@csrf_exempt
+def createComplaint(request):
+    # Make sure request is POST method and content type is application/json
+    if request.method != 'POST':
+        return HttpResponse('Only the POST verb can be used on this endpoint.', status=405)
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+
+    # get the request body and convert it to python dict object
+    body_dict = json.loads(request.body)
+
+    # Create the Complaints object and save to database
+    complaints = Complaints(
+        client_user_id_id = body_dict['client_user_id'],
+        volunteer_user_id_id = body_dict['volunteer_user_id'],
+        completed_grocery_post_id_id = body_dict['completed_grocery_post_id'],
+        is_complainer_volunteer = body_dict['is_complainer_volunteer'],
+        complaint_details = body_dict['complaint_details']
+    )
+    complaints.save()
+    return HttpResponse('Successfully added Complaints object', status=200)
+
+
+@csrf_exempt
+def getComplaintsByVolunteer(request, user_id):
+    # Make sure request is GET method and content type is application/json
+    if request.method != 'GET':
+        return HttpResponse('Only the GET verb can be used on this endpoint.', status=405)
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+
+    complaintsJsonDict = getAllComplaints(True, user_id)
+    return JsonResponse(complaintsJsonDict)
+
+
+@csrf_exempt
+def getComplaintsByClient(request, user_id):
+    # Make sure request is GET method and content type is application/json
+    if request.method != 'GET':
+        return HttpResponse('Only the GET verb can be used on this endpoint.', status=405)
+    if request.content_type != 'application/json':
+        return HttpResponse('The content-type must be application/json.', status=415)
+
+    complaintsJsonDict = getAllComplaints(False, user_id)
+    return JsonResponse(complaintsJsonDict)
