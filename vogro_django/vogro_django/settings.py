@@ -163,3 +163,11 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+AUTH_USER_MODEL = 'auth_api.CustomUser'
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'auth_api.serializers.CustomRegisterSerializer',
+}
+
+ACCOUNT_ADAPTER = 'auth_api.adapter.CustomAccountAdapter'
