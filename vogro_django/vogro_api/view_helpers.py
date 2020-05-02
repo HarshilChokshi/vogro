@@ -56,7 +56,7 @@ def writeClientUserToDatabaseFromRequest(request, id=None):
 
     clientUser.save()
 
-def get_kilometer_distance_between_two_points(lat1, long1, lat2, long2):
+def getMeterDistanceBetweenTwoLocations(lat1, long1, lat2, long2):
     coords_1 = (lat1, long1)
     coords_2 = (lat2, long2)
 
