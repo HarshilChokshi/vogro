@@ -1,11 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class LogIn extends StatelessWidget {
+//this is for the choosing images from our gallery
+
+// class UserInfo extends StatefulWidget {
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   File _image;
+
+//   Future getImage() async {
+//     var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+//     setState(() {
+//       _image = image;
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Image Picker Example'),
+//       ),
+//       body: Center(
+//         child: _image == null
+//             ? Text('No image selected.')
+//             : Image.file(_image),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: getImage,
+//         tooltip: 'Pick Image',
+//         child: Icon(Icons.add_a_photo),
+//       ),
+//     );
+//   }
+// }
+
+class UserInfo extends StatelessWidget {
+
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topRight,
       child: Scaffold(
-        resizeToAvoidBottomPadding: false ,
+         resizeToAvoidBottomPadding: false ,
         backgroundColor: Colors.white,
         body: Container(
           child: Column(
@@ -13,7 +53,7 @@ class LogIn extends StatelessWidget {
               SizedBox(height: 20),
               Row(children: <Widget>[
                 Back(context),
-                SizedBox(width: 100),
+                SizedBox(width: 50),
                 Text("LOG IN",
                     style: TextStyle(
                       fontSize: 15,
@@ -24,7 +64,7 @@ class LogIn extends StatelessWidget {
               ]),
               Align(
                 alignment: Alignment(-0.75, 0),
-                child: Text("Email",
+                child: Text("First Name",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -35,7 +75,18 @@ class LogIn extends StatelessWidget {
               SizedBox(height: 15),
               Align(
                 alignment: Alignment(-0.75, 0),
-                child: Text("Password",
+                child: Text("Last Name",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              SizedBox(height: 10),
+              Password(),
+              SizedBox(height: 15),
+              Align(
+                alignment: Alignment(-0.75, 0),
+                child: Text("Address",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -44,10 +95,17 @@ class LogIn extends StatelessWidget {
               SizedBox(height: 10),
               Password(),
               SizedBox(height: 10),
-              ContinueWithFacebookButton(context),
-              ContinueWithGoogleButton(),
+              Align(
+                alignment: Alignment(-0.75, 0),
+                child: Text("Choose Pic",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              SizedBox(height: 10),
               SignIn(context),
-              ForgetPassword(context),
+              
             ],
           ),
         ),
@@ -87,11 +145,13 @@ Widget Email() {
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: 'Email',
+            hintText: 'Alex',
             contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
             border: OutlineInputBorder(),
           )));
 }
+
+
 
 Widget Password() {
   return Padding(
@@ -101,68 +161,23 @@ Widget Password() {
           obscureText: true,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: 'New Password',
+            hintText: 'Jones',
             contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
             border: OutlineInputBorder(),
           )));
 }
 
-Widget ContinueWithFacebookButton(BuildContext context) {
-  return Center(
-    child: Column(
-      children: <Widget>[
-        SizedBox(
-          width: 300,
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-                side: BorderSide(color: Colors.black)),
-            color: Color(0xff4267b2),
-            onPressed: () {},
-            textColor: Colors.white,
-            child: Container(
-              padding: const EdgeInsets.all(10.0),
-              child: const Text('SIGNIN WITH FACEBOOK',
-                  style: TextStyle(
-                    fontSize: 13,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget ContinueWithGoogleButton() {
-  return Center(
-    child: Column(
-      children: <Widget>[
-        SizedBox(
-          width: 300,
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-                side: BorderSide(color: Colors.black)),
-            color: Color(0xff4385F4),
-            onPressed: () {},
-            textColor: Colors.white,
-            child: Container(
-              padding: const EdgeInsets.all(10.0),
-              child: const Text('SIGNIN WITH GOOGLE',
-                  style: TextStyle(
-                    fontSize: 13,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
+Widget Address() {
+  return Padding(
+      padding: const EdgeInsets.fromLTRB(22.0, 0, 22, 0),
+      child: TextFormField(
+          keyboardType: TextInputType.text,
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: '420 Cool St',
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            border: OutlineInputBorder(),
+          )));
 }
 
 Widget SignIn(BuildContext context) {
@@ -183,36 +198,6 @@ Widget SignIn(BuildContext context) {
               child: const Text('SIGN IN',
                   style: TextStyle(
                     fontSize: 13,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-Widget ForgetPassword(BuildContext context) {
-  return Center(
-    child: Column(
-      children: <Widget>[
-        SizedBox(
-          width: 200,
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-                side: BorderSide(color: Colors.black)),
-            color: Color(0xFFBDBDBD),
-            onPressed: () {},
-            textColor: Colors.black,
-            child: Container(
-              padding: const EdgeInsets.all(10.0),
-              child: const Text('FORGET PASSWORD',
-                  style: TextStyle(
-                    fontSize: 11,
                     letterSpacing: 2.0,
                     fontWeight: FontWeight.bold,
                   )),
