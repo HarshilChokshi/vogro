@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:vogro_flutter/src/screens/log_in_page.dart';
+import 'package:vogro_flutter/src/screens/volunteer_or_client.dart';
 import 'sign_up_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -133,7 +133,7 @@ Widget LoginButton(BuildContext context) {
           child: FlatButton(
             onPressed: () {
               Navigator.push(
-                  context, CupertinoPageRoute(builder: (context) => LogIn()));
+                  context, CupertinoPageRoute(builder: (context) => VolunteerOrClient()));
             },
             textColor: Colors.black,
             child: Container(
