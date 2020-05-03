@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('vogro_api/', include('vogro_api.urls')),
     path('admin/', admin.site.urls),
+    path('auth/', include('auth_api.urls')),
 ]
