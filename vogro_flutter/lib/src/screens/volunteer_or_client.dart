@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vogro_flutter/src/screens/user_info.dart';
 import 'log_in_page.dart';
-
+import 'validate.dart';
 
 class VolunteerOrClient extends StatelessWidget {
   @override
@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget{
           children: <Widget>[
            
             RaisedButton ( onPressed: ( ) {Navigator.push(
-                  context, CupertinoPageRoute(builder: (context) => LogIn()));} , child:
+                  context, CupertinoPageRoute(builder: (context) => LoginPage()));} , child:
                    Text('Login As Volunteer'),
                     ),
             FlatButton(onPressed: () {Navigator.push(

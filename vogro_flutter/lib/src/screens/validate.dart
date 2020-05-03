@@ -1,14 +1,12 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'resend_email_page.dart';
+import 'package:email_validator/email_validator.dart';
 
-class SignUp extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<SignUp> {
+class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -24,28 +22,24 @@ class _LoginPageState extends State<SignUp> {
       // Email & password matched our validation rules
       // and are saved to _email and _password fields.
       
-      _loginCommand();
+      // _loginCommand();
     }
   }
 
-  void _loginCommand() {
-    // This is just a demo, so no actual login here.
-    final snackbar = SnackBar(
-      content: Text('Email: $_email, password: $_password'),
-    );
+  // void _loginCommand() {
+  //   // This is just a demo, so no actual login here.
+  //   final snackbar = SnackBar(
+  //     content: Text('Email: $_email, password: $_password'),
+  //   );
   
-    scaffoldKey.currentState.showSnackBar(snackbar);
-  }
+  //   scaffoldKey.currentState.showSnackBar(snackbar);
+  // }
 
-  
-  final TextEditingController _pass = TextEditingController();
-  final TextEditingController _confirmPass = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('VoGro'),
@@ -58,7 +52,7 @@ class _LoginPageState extends State<SignUp> {
             children: [
               SizedBox(height: 20),
                SizedBox(width: 100),
-               Text("Join VoGro Today",
+               Text("Log In",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -76,28 +70,14 @@ class _LoginPageState extends State<SignUp> {
               ),
               SizedBox(height:20),
               TextFormField(
-                controller: _pass,
-                decoration: InputDecoration(labelText: 'New Password',
+                decoration: InputDecoration(labelText: 'Password',
                 border: OutlineInputBorder(),
                 hintText: 'Jondoe123',
                 contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0)),
-                validator: (val) =>
-                    val.length < 4 ? 'Password too short..' : null,
-                onSaved: (val) => _password = val,
+                // validator: (val) =>
+                //     val.length < 4 ? 'Password too short..' : null,
+                // onSaved: (val) => _password = val,
                 obscureText: true,
-              ),
-              SizedBox(height:20),
-              TextFormField(
-                controller: _confirmPass,
-                decoration: InputDecoration(labelText: 'Confirm Password',
-                border: OutlineInputBorder(),
-                hintText: 'Jondoe123',
-                contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0)),
-                validator: (val) =>
-                    val.length < 4 ? 'Password too short..' : null,
-                onSaved: (val) => _password = val,
-                obscureText: true, 
-                
               ),
               SizedBox(height:20),
               RaisedButton(
